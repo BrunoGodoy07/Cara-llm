@@ -3,8 +3,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon backend/server.js",
-    "dev": "vite"
+    "start": "concurrently \"npm run start-backend\" \"npm run start-frontend\"",
+    "start-backend": "cd backend && npm start",
+    "start-frontend": "cd frontend && npm start"
   },
   "author": "",
   "license": "ISC",
@@ -19,5 +20,8 @@
     "nodemon": "^3.1.10",
     "zod": "^3.24.4"
   },
-  "type": "module"
+  "type": "module",
+  "devDependencies": {
+    "concurrently": "^9.2.0"
+  }
 }
