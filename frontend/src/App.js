@@ -1,5 +1,5 @@
 import React from "react";
-import ChatInterface from "./components/ChatInterface";
+import ChatInterface from "./components/ChatInterface.jsx";
 
 
 function App() {
