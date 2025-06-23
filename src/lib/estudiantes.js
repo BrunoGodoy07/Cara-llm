@@ -34,6 +34,16 @@ class Estudiantes {
     if (!nombre || !apellido || !curso) {
       throw new Error("Faltan datos para agregar el estudiante.");
     }
+    // Check for duplicates
+    const exists = this.estudiantes.some(
+      e =>
+        e.nombre.toLowerCase() === nombre.toLowerCase() &&
+        e.apellido.toLowerCase() === apellido.toLowerCase() &&
+        e.curso.toLowerCase() === curso.toLowerCase()
+    );
+    if (exists) {
+      throw new Error("El alumno ya existe en la lista.");
+    }
     const nuevo = { nombre, apellido, curso };
     this.estudiantes.push(nuevo);
     this.guardarEstudiantes();

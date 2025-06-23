@@ -24,7 +24,7 @@ Si hay registros duplicados, eliminalos.
 `.trim();
 
 const ollamaLLM = new Ollama({
-    model: "qwen3:1.7b",
+    model: "gemma3:4b",
     temperature: 0.75,
     timeout: 2 * 60 * 1000,
 });
@@ -52,15 +52,22 @@ const agregarEstudianteTool = tool({
     name: "agregarEstudiante",
     description: "Agrega un estudiante a la base",
     parameters: z.object({
-        nombre: z.string().describe("El nombre del estudiante"),
-        apellido: z.string().describe("El apellido del estudiante"),
-        curso: z.string().describe("El curso del estudiante"),
+      nombre: z.string().describe("El nombre del estudiante"),
+      apellido: z.string().describe("El apellido del estudiante"),
+      curso: z.string().describe("El curso del estudiante"),
     }),
     execute: ({ nombre, apellido, curso }) => {
+      try {
         estudiantes.agregarEstudiante(nombre, apellido, curso);
-        return "Estudiante agregado correctamente: " + JSON.stringify({ nombre, apellido, curso });
+        return `El alumno ${nombre}, ${apellido}, ${curso} ha sido agregado correctamente.`;
+      } catch (e) {
+        // If duplicate or other error, show user-friendly message
+        return e.message === "El alumno ya existe en la lista."
+          ? "Este alumno ya existe en la lista."
+          : "No se pudo agregar el alumno: " + e.message;
+      }
     },
-});
+  });
 
 const listarEstudiantesTool = tool({
     name: "listarEstudiantes",
@@ -78,17 +85,25 @@ const agente = agent({
 
 // --- API CHAT ROUTE ---
 app.post('/api/chat', async (req, res) => {
-  const { message } = req.body;
-  if (!message) return res.status(400).json({ error: 'No message provided' });
-
-  try {
-    const respuesta = await agente.run(message);
-    res.json({ reply: typeof respuesta === "string" ? respuesta : JSON.stringify(respuesta.data.result) });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Error procesando el mensaje' });
-  }
-});
+    const { message } = req.body;
+    if (!message) return res.status(400).json({ error: 'No message provided' });
+  
+    try {
+      let respuesta = await agente.run(message);
+  
+      // Remove <think>...</think> blocks and leading/trailing whitespace/newlines
+      if (typeof respuesta === "string") {
+        respuesta = respuesta.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+      } else {
+        respuesta = JSON.stringify(respuesta);
+      }
+  
+      res.json({ reply: respuesta });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Error procesando el mensaje' });
+    }
+  });
 
 app.listen(3001, () => {
   console.log('Server running on http://localhost:3001');
