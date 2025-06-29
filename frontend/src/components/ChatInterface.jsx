@@ -4,7 +4,16 @@ const API_URL = "http://localhost:3001";
 
 const ChatInterface = () => {
     const [messages, setMessages] = useState([
-        { sender: "bot", text: "Hello! How can I help you today?" }
+        {
+            sender: "bot", text: `
+¡Hola! Soy tu asistente para gestionar estudiantes.
+Puedo ayudarte a:
+- Buscar estudiantes por nombre o apellido
+- Agregar nuevos estudiantes
+- Mostrar la lista completa de estudiantes
+
+¿Qué necesitás?
+` }
     ]);
     const [input, setInput] = useState("");
     const [loading, setLoading] = useState(false);
@@ -28,7 +37,7 @@ const ChatInterface = () => {
             const res = await axios.post(`${API_URL}/api/chat`, { message: input });
             const botReply = {
                 sender: "bot",
-                text: res.data.reply // Adjust this to match your backend response shape
+                text: res.data.reply// Adjust this to match your backend response shape
             };
             setMessages((prev) => [...prev, botReply]);
         } catch (err) {
