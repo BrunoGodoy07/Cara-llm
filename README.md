@@ -6,7 +6,7 @@ Este proyecto es un entregable para implementar un sistema de gestión de estudi
 
 - Node.js >= 18
 - [Ollama](https://ollama.com/) instalado y corriendo
-- Modelo qwen3:1.7b instalado
+- Modelo qwen3:4b instalado
 
 ## 🛠 Instalación Paso a Paso
 
@@ -23,7 +23,7 @@ Sigue las instrucciones para tu sistema operativo (Windows, Mac o Linux).
 Abre una terminal y ejecuta:
 
 ```bash
-ollama pull qwen3:1.7b
+ollama pull qwen3:4b
 ```
 
 Esto descargará el modelo requerido para el proyecto.
@@ -33,77 +33,30 @@ Esto descargará el modelo requerido para el proyecto.
 Desde la raíz del proyecto, instala las dependencias de backend y frontend:
 
 ```bash
-cd backend
-npm install
-cd ../frontend
-npm install
+npm i
+cd frontend
+npm i
 cd ..
 ```
 
 ## 🚀 Cómo ejecutar el chat
 
-### 1. Iniciar Ollama
+### Comando para iniciar
 
-En una terminal, ejecuta:
-
-```bash
-ollama run qwen3:1.7b
-```
-
-Deja esta terminal abierta mientras usas el sistema.
-
-### 2. Iniciar el backend
-
-En otra terminal, desde la carpeta `backend`:
+En la terminal, desde la carpeta `raiz`:
 
 ```bash
-npm start
+npm run start
 ```
 
 Esto levantará el servidor en http://localhost:3001
 
-### 3. Iniciar el frontend
-
-En otra terminal, desde la carpeta `frontend`:
-
-```bash
-npm start
-```
 
 Esto abrirá la interfaz web en http://localhost:3000
 
 ¡Listo! Ya puedes interactuar con el chat para gestionar estudiantes.
 
-## 🎯 Tu Tarea
-
-Debes implementar las siguientes funcionalidades:
-
-1. En `src/lib/estudiantes.js`:
-   - Método `agregarEstudiante(nombre, apellido, curso)`
-   - Método `buscarEstudiantePorNombre(nombre)`
-   - Método `buscarEstudiantePorApellido(apellido)`
-   - Método `listarEstudiantes()`
-
-2. En `src/ejemplo-alumnos-tools.js`:
-   - Tool `buscarPorNombre`
-   - Tool `buscarPorApellido`
-   - Tool `agregarEstudiante`
-   - Tool `listarEstudiantes`
-
-## 💡 Ayuda
-
-- Cada método y Tool tiene comentarios TODO indicando dónde implementar el código
-- Revisa la documentación de llamaindex para entender cómo funcionan las Tools
-- Utiliza la clase `Estudiantes` para manejar los datos
-- Las Tools deben usar los métodos de la clase `Estudiantes`
-
 ## 📝 Notas
-
-- El código base ya incluye:
-  - Interfaz CLI funcional
-  - Formateo de respuestas
-  - Manejo básico de archivos
-  - Estructura del proyecto
 
 - No modifiques:
   - La estructura de los archivos
